@@ -1,0 +1,85 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #FAFAFA;
+}
+
+/*Configuração inicial*/
+#blocos {
+    width: 25vw;
+    height: 100vh;
+    position: absolute;
+    left: 0vw;
+    background-color: #1E2A38;
+}
+
+#fluxograma {
+    width: 50vw;
+    height: 100vh;
+    position: absolute;
+    left: 25vw;
+    background-color: #FAFAFA;
+}
+
+#console {
+    width: 25vw;
+    height: 100vh;
+    position: absolute;
+    left: 75vw;
+    background-color: #000000;
+}
+
+.secao {
+    border: 2.5px;
+    border-color: #000000;
+}
+
+.BlocoInstanciar {
+    width: 220px;
+    height: 110px;
+    margin: 35px;
+    position: relative;
+    left: 15%;
+}
+
+#Inicio {
+    margin: 35px;
+    position: absolute;
+    left: 30%;
+}
+
+#Final {
+    margin: 35px;
+    position: absolute;
+    top: 75%;
+    left: 30%;
+}
+
+#DecisaoInit {
+    width: 220px;
+    height: 130px;
+}
+
+.ImgBlc {
+    width: 220px;
+    height: 110px;
+}
+
+#BlcDecisao {
+    width: 220px;
+    height: 130px;
+}
+
+#BlcTerminal {
+    width: 180px;
+    height: 60px;
+}
+
+/*Blocos instanciandos*/
+.blocoInst {
+position: absolute;
+}
+
