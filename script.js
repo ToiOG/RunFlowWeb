@@ -1,16 +1,20 @@
-let iniX = 0;
-let iniY = 0;
-let newX = 0;
-let newY = 0;
-let blocoSelecionado = null;
-
-const intBloco1 = document.getElementById("ProcessamentoInit");
-const painelFluxograma = document.getElementById("fluxograma");
-
 /*Configurações do framework*/
 interact("#fluxograma").dropzone({
     accept: ".BlocoInstanciar",
-    overap: 0.5
+    overlap: 1,
+    ondrop(e) {
+        const PAINELFLUXOGRAMA = document.getElementById("fluxograma");
+        let tamanhoBlocoOriginal = e.relatedTarget.getBoundingClientRect();
+        let Coordenadas = PAINELFLUXOGRAMA.getBoundingClientRect();
+        let x = e.dragEvent.pageX - Coordenadas.left - (tamanhoBlocoOriginal.width / 2);
+        let y = e.dragEvent.pageY - Coordenadas.top - (tamanhoBlocoOriginal.height / 2);
+        let BlocoInstanciado = instanciar(e.relatedTarget);
+
+        BlocoInstanciado.style.left = x + "px";
+        BlocoInstanciado.style.top = y + "px";
+
+        PAINELFLUXOGRAMA.appendChild(BlocoInstanciado);
+    }
 });
 
 interact(".BlocoInstanciar").styleCursor(false).draggable({
@@ -39,6 +43,24 @@ interact(".BlocoInstanciar").styleCursor(false).draggable({
         target.removeAttribute("data-y");
     });
 
+   interact(".BlocoInst").styleCursor(false).draggable({
+        listeners: {
+            move (e) {
+            const target = e.target;
+
+            // pega os dados salvos ou começa em 0
+            const x = (parseFloat(target.getAttribute("data-x")) || 0) + e.dx;
+            const y = (parseFloat(target.getAttribute("data-y")) || 0) + e.dy;
+
+            // aplica a transformação no elemento
+            target.style.transform = `translate(${x}px, ${y}px)`;
+
+            // salva a posição nova
+            target.setAttribute("data-x", x);
+            target.setAttribute("data-y", y);
+            }
+        }
+   });
 /*Termino das configurações do framework*/
 
 /*Blocos de inicio*/
@@ -111,13 +133,13 @@ cxFinal.fill();
 
 /*Fim dos blocos de inicio*/
 
-function instanciar(e) {
-    let idBloco = e.currentTarget.id;
+function instanciar(target) {
+    let idBloco = target.id;
+    let bloco = document.createElement("div");
     switch (idBloco) {
         case "ProcessamentoInit":
             {
-                let bloco = document.createElement("div");
-                bloco.classList.add("Processamento", "blocoInst");
+                bloco.classList.add("Processamento", "BlocoInst");
 
                 let img = document.createElement("canvas");
                 let cxProc = img.getContext("2d");
@@ -126,13 +148,11 @@ function instanciar(e) {
                 img.classList.add("ImgBlc");
 
                 bloco.appendChild(img);
-                document.getElementById("fluxograma").appendChild(bloco);
             }
             break;
         case "EntradaInit":
             {
-                let bloco = document.createElement("div");
-                bloco.classList.add("Entrada", "blocoInst");
+                bloco.classList.add("Entrada", "BlocoInst");
 
                 let img = document.createElement("canvas");
                 let cxEntrada = img.getContext("2d");
@@ -146,13 +166,11 @@ function instanciar(e) {
                 cxEntrada.fill();
 
                 bloco.appendChild(img);
-                document.getElementById("fluxograma").appendChild(bloco);
             }
             break;
         case "DecisaoInit":
             {
-                let bloco = document.createElement("div");
-                bloco.classList.add("Decisao", "blocoInst");
+                bloco.classList.add("Decisao", "BlocoInst");
 
                 let img = document.createElement("canvas");
                 let cxDeci = img.getContext("2d");
@@ -165,13 +183,11 @@ function instanciar(e) {
                 cxDeci.fill();
 
                 bloco.appendChild(img);
-                document.getElementById("fluxograma").appendChild(bloco);
             }
             break;
         case "SaidaInit":
             {
-                let bloco = document.createElement("div");
-                bloco.classList.add("Saida", "blocoInst");
+                bloco.classList.add("Saida", "BlocoInst");
 
                 let img = document.createElement("canvas");
                 let cxSaida = img.getContext("2d");
@@ -186,10 +202,10 @@ function instanciar(e) {
                 cxSaida.fill();
 
                 bloco.appendChild(img);
-                document.getElementById("fluxograma").appendChild(bloco);
                 }
             break;
     }
+    return bloco;
     
 }
 //fim dos blocos
