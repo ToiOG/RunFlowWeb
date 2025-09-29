@@ -46,12 +46,16 @@ body {
 }
 
 #Inicio {
+    width: 180px;
+    height: 80px;
     margin: 35px;
     position: absolute;
     left: 30%;
 }
 
 #Final {
+    width: 180px;
+    height: 80px;
     margin: 35px;
     position: absolute;
     top: 75%;

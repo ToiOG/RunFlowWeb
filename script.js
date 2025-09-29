@@ -1,3 +1,6 @@
+/* Variavel de controle da ligação entre blocos */
+let ligacao = false;
+
 /*Configurações do framework*/
 interact("#fluxograma").dropzone({
     accept: ".BlocoInstanciar",
@@ -59,7 +62,12 @@ interact(".BlocoInstanciar").styleCursor(false).draggable({
             target.setAttribute("data-x", x);
             target.setAttribute("data-y", y);
             }
-        }
+        },  
+        modifiers: [
+            interact.modifiers.restrictRect({
+                restriction: "parent"
+            })
+        ]
    });
 /*Termino das configurações do framework*/
 
@@ -81,6 +89,7 @@ cxEntrada.lineTo(220, 110);
 cxEntrada.lineTo(0, 110);
 cxEntrada.lineTo(0, 60);
 cxEntrada.fill();
+cxEntrada.closePath();
 
 
 let blocoDeci = document.getElementById("BlcDecisao");
@@ -93,6 +102,7 @@ cxDeci.lineTo(110, 0);
 cxDeci.lineTo(220, 65);
 cxDeci.lineTo(110, 130);
 cxDeci.fill();
+cxDeci.closePath();
 
 let blocoSaida = document.getElementById("BlcSaida");
 let cxSaida = blocoSaida.getContext("2d");
@@ -106,6 +116,7 @@ cxSaida.lineTo(190, 0);
 cxSaida.arc(190, 55, 55, -Math.PI/2, Math.PI/2);
 cxSaida.lineTo(30, 110);
 cxSaida.fill();
+cxSaida.closePath();
 
 let blocoInicio = document.getElementById("BlcInicio");
 let cxInicio = blocoInicio.getContext("2d");
@@ -118,6 +129,7 @@ cxInicio.lineTo(110, 0);
 cxInicio.arc(190, 55, 55, -Math.PI/2, Math.PI/2);
 cxInicio.lineTo(55, 110);
 cxInicio.fill();
+cxInicio.closePath();
 
 let blocoFinal = document.getElementById("BlcFinal");
 let cxFinal = blocoFinal.getContext("2d");
@@ -130,12 +142,15 @@ cxFinal.lineTo(110, 0);
 cxFinal.arc(190, 55, 55, -Math.PI/2, Math.PI/2);
 cxFinal.lineTo(55, 110);
 cxFinal.fill();
+cxFinal.closePath();
 
 /*Fim dos blocos de inicio*/
 
 function instanciar(target) {
     let idBloco = target.id;
     let bloco = document.createElement("div");
+    bloco.style.width = "160px";
+    bloco.style.height = "81px";
     switch (idBloco) {
         case "ProcessamentoInit":
             {
@@ -144,7 +159,21 @@ function instanciar(target) {
                 let img = document.createElement("canvas");
                 let cxProc = img.getContext("2d");
                 cxProc.fillStyle = "rgb(52, 196, 160)";
-                cxProc.fillRect(0, 0, 220, 110);
+                cxProc.fillRect(0, 20, 220, 110);
+                cxProc.strokeRect(0, 20, 220, 110);
+
+                cxProc.beginPath();
+                cxProc.arc(110, 20, 20, 2, Math.PI/2);
+                cxProc.fill();
+                cxProc.stroke();
+                cxProc.closePath();
+
+                cxProc.beginPath();
+                cxProc.arc(110, 130, 20, 0, 2 * Math.PI);
+                cxProc.fill();
+                cxProc.stroke();
+                cxProc.closePath();
+
                 img.classList.add("ImgBlc");
 
                 bloco.appendChild(img);
@@ -159,34 +188,40 @@ function instanciar(target) {
 
                 cxEntrada.fillStyle = "rgb(52, 196, 160)";
                 cxEntrada.beginPath();
-                cxEntrada.moveTo(220, 0);
-                cxEntrada.lineTo(220, 110);
-                cxEntrada.lineTo(0, 110);
-                cxEntrada.lineTo(0, 60);
-                cxEntrada.fill();
+                cxEntrada.moveTo(160, 0);
+                cxEntrada.lineTo(160, 81);
+                cxEntrada.lineTo(0, 81);
+                cxEntrada.lineTo(0, 40);
+                cxEntrada.lineTo(160, 0);
+                cxEntrada.fill();  
+                cxEntrada.stroke();
 
                 bloco.appendChild(img);
             }
             break;
         case "DecisaoInit":
             {
+                bloco.style.height = "120px";
                 bloco.classList.add("Decisao", "BlocoInst");
 
                 let img = document.createElement("canvas");
                 let cxDeci = img.getContext("2d");
                 cxDeci.fillStyle = "rgb(52, 196, 160)";
                 cxDeci.beginPath();
-                cxDeci.moveTo(0, 65);
-                cxDeci.lineTo(110, 0);
-                cxDeci.lineTo(220, 65);
-                cxDeci.lineTo(110, 130);
+                cxDeci.moveTo(0, 60);
+                cxDeci.lineTo(80, 0);
+                cxDeci.lineTo(160, 60);
+                cxDeci.lineTo(80, 120);
+                cxDeci.lineTo(0, 60);
                 cxDeci.fill();
+                cxDeci.stroke();
 
                 bloco.appendChild(img);
             }
             break;
         case "SaidaInit":
             {
+                bloco.style.width = "185px";
                 bloco.classList.add("Saida", "BlocoInst");
 
                 let img = document.createElement("canvas");
@@ -194,18 +229,23 @@ function instanciar(target) {
 
                 cxSaida.fillStyle = "rgb(52, 196, 160)";
                 cxSaida.beginPath();
-                cxSaida.moveTo(0, 55);
+                cxSaida.moveTo(0, 40);
                 cxSaida.lineTo(30, 0);
-                cxSaida.lineTo(190, 0);
-                cxSaida.arc(190, 55, 55, -Math.PI/2, Math.PI/2);
-                cxSaida.lineTo(30, 110);
+                cxSaida.lineTo(150, 0);
+                cxSaida.arc(150, 40, 40, -Math.PI/2, Math.PI/2);
+                cxSaida.lineTo(30, 80);
+                cxSaida.lineTo(0, 40);
                 cxSaida.fill();
+                cxSaida.stroke();
 
                 bloco.appendChild(img);
                 }
             break;
     }
     return bloco;
-    
+}
+
+function executarLigacao(e) {
+    if (e.target.classList.contains("")) {}
 }
 //fim dos blocos
