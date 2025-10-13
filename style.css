@@ -84,6 +84,22 @@ body {
 
 /*Blocos instanciandos*/
 .BlocoInst {
-position: absolute;
+    position: absolute;
+
 }
 
+.Conector {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 41%;
+
+}
+
+.Conector.Cima {
+    top: 0;
+}
+
+.Conector.Baixo {
+    top: 80px;
+}

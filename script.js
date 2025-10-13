@@ -1,5 +1,8 @@
 /* Variavel de controle da ligação entre blocos */
 let ligacao = false;
+let conectorInicial = null;
+let conectorDestino = null;
+let ligacoes = [];         
 
 /*Configurações do framework*/
 interact("#fluxograma").dropzone({
@@ -129,7 +132,25 @@ cxInicio.lineTo(110, 0);
 cxInicio.arc(190, 55, 55, -Math.PI/2, Math.PI/2);
 cxInicio.lineTo(55, 110);
 cxInicio.fill();
+cxInicio.stroke();
 cxInicio.closePath();
+
+let conectInicio = document.createElement("div");
+conectInicio.classList.add("Conector", "Baixo");
+
+let imgConectInicio = document.createElement("canvas");
+let cxConectInicio = imgConectInicio.getContext("2d");
+cxConectInicio.fillStyle = "rgb(52, 196, 160)";
+cxConectInicio.beginPath();
+cxConectInicio.arc(15, 15, 15, 0, 2 * Math.PI);
+cxConectInicio.fill();
+cxConectInicio.stroke();
+cxConectInicio.closePath();
+conectInicio.appendChild(imgConectInicio);
+
+document.querySelector("#Inicio").appendChild(conectInicio)
+
+
 
 let blocoFinal = document.getElementById("BlcFinal");
 let cxFinal = blocoFinal.getContext("2d");
@@ -142,13 +163,64 @@ cxFinal.lineTo(110, 0);
 cxFinal.arc(190, 55, 55, -Math.PI/2, Math.PI/2);
 cxFinal.lineTo(55, 110);
 cxFinal.fill();
+cxFinal.stroke();
 cxFinal.closePath();
+
+
+let conectFinal = document.createElement("div");
+conectFinal.classList.add("Conector", "Cima");
+
+let imgConectFinal = document.createElement("canvas");
+let cxConectFinal = imgConectFinal.getContext("2d");
+cxConectFinal.fillStyle = "rgb(52, 196, 160)";
+cxConectFinal.beginPath();
+cxConectFinal.arc(15, 15, 15, 0, 2 * Math.PI);
+cxConectFinal.fill();
+cxConectFinal.stroke();
+cxConectFinal.closePath();
+conectFinal.appendChild(imgConectFinal);
+
+document.querySelector("#Final").appendChild(conectFinal)
+
 
 /*Fim dos blocos de inicio*/
 
 function instanciar(target) {
     let idBloco = target.id;
     let bloco = document.createElement("div");
+
+    let conect1 = document.createElement("div");
+    let conect2 = document.createElement("div");
+    conect1.style.width = "30px";
+    conect1.style.height = "30px";
+    conect2.style.width = "30px";
+    conect2.style.height = "30px";
+
+
+    conect1.classList.add("Conector", "Cima");
+    conect2.classList.add("Conector", "Baixo");
+    let imgConect1 = document.createElement("canvas");
+    let cxConect1 = imgConect1.getContext("2d");
+    cxConect1.fillStyle = "rgb(52, 196, 160)";
+    cxConect1.beginPath();
+    cxConect1.arc(15, 15, 15, 0, 2 * Math.PI);
+    cxConect1.fill();
+    cxConect1.stroke();
+    cxConect1.closePath();
+    conect1.appendChild(imgConect1);
+
+    let imgConect2 = document.createElement("canvas");
+    let cxConect2 = imgConect2.getContext("2d");
+    cxConect2.fillStyle = "rgb(52, 196, 160)";
+    cxConect2.beginPath();
+    cxConect2.arc(15, 15, 15, 0, 2 * Math.PI);
+    cxConect2.fill();
+    cxConect2.stroke();
+    cxConect2.closePath();
+    conect2.appendChild(imgConect2);
+
+    bloco.appendChild(conect1);
+    bloco.appendChild(conect2);
     bloco.style.width = "160px";
     bloco.style.height = "81px";
     switch (idBloco) {
@@ -161,18 +233,6 @@ function instanciar(target) {
                 cxProc.fillStyle = "rgb(52, 196, 160)";
                 cxProc.fillRect(0, 20, 220, 110);
                 cxProc.strokeRect(0, 20, 220, 110);
-
-                cxProc.beginPath();
-                cxProc.arc(110, 20, 20, 2, Math.PI/2);
-                cxProc.fill();
-                cxProc.stroke();
-                cxProc.closePath();
-
-                cxProc.beginPath();
-                cxProc.arc(110, 130, 20, 0, 2 * Math.PI);
-                cxProc.fill();
-                cxProc.stroke();
-                cxProc.closePath();
 
                 img.classList.add("ImgBlc");
 
@@ -217,6 +277,27 @@ function instanciar(target) {
                 cxDeci.stroke();
 
                 bloco.appendChild(img);
+
+                conect2.style.left = "0";
+                conect2.style.top = "43px";
+
+                let conect3 = document.createElement("div");
+                conect3.style.width = "30px";
+                conect3.style.height = "30px";
+                conect3.style.left = "130px";
+                conect3.style.top = "43px";
+
+                conect3.classList.add("Conector");
+                let imgConect3 = document.createElement("canvas");
+                let cxConect3 = imgConect3.getContext("2d");
+                cxConect3.fillStyle = "rgb(52, 196, 160)";
+                cxConect3.beginPath();
+                cxConect3.arc(15, 15, 15, 0, 2 * Math.PI);
+                cxConect3.fill();
+                cxConect3.stroke();
+                cxConect3.closePath();
+                conect3.appendChild(imgConect3);
+                bloco.appendChild(conect3);
             }
             break;
         case "SaidaInit":
@@ -245,7 +326,34 @@ function instanciar(target) {
     return bloco;
 }
 
+//Função em desenvolvimento
+/*
+function ligarBloco(e) {
+    if (!ligacao) {
+        ligacao = true;
+        e.target.classList.add("LigacaoAtiva");
+        if (e.target.classList.contains(".Cima")) {
+            conectorInicial = e.target;
+            conectorDestino = null;
+        } else {
+            conectorDestino = e.target;
+            conectorInicial = null;
+        }
+    } else {
+        if (e.target.classList.contains(".Cima") && conectorInicial!=null) {
+            ligacao = false;
+            conectorInicial.parentElement.setAttribute("BlocoProximo", e.target);
+            e.target.parentElement.setAttribute("BlocoAnterior", conectorInicial);
+        } else if (e.target.classList.contains(".Baixo") && conectorDestino!=null){
+            ligacao = false;
+            conectorDestino.parentElement.setAttribute("BlocoProximo", e.target);
+            e.target.parentElement.setAttribute("BlocoAnterior", conectorDestino);
+        }
+    }
+
+}
+
 function executarLigacao(e) {
     if (e.target.classList.contains("")) {}
 }
-//fim dos blocos
+//fim dos blocos*/
