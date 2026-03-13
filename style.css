@@ -1,65 +1,45 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
 
 body {
     background-color: #FAFAFA;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+
 }
 
 /*Configuração inicial*/
 #blocos {
-    width: 25vw;
-    height: 100vh;
-    position: absolute;
-    left: 0vw;
+    height: 93vh;
     background-color: #1E2A38;
+    align-items: center;
+    justify-items: center;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    z-index: 1;
 }
 
 #fluxograma {
-    width: 50vw;
-    height: 100vh;
-    position: absolute;
-    left: 25vw;
+    height: 100%;
     background-color: #FAFAFA;
+    z-index: 0;
 }
 
-#console {
-    width: 25vw;
-    height: 100vh;
-    position: absolute;
-    left: 75vw;
+#consoleSection {
+    height: 100%;
     background-color: #000000;
+    z-index: 1;
+    align-items: center;
+    justify-items: center;
+    padding-top: 10px;
 }
 
-.secao {
-    border: 2.5px;
-    border-color: #000000;
-}
 
 .BlocoInstanciar {
     width: 220px;
     height: 110px;
-    margin: 35px;
-    position: relative;
-    left: 15%;
-}
-
-#Inicio {
-    width: 180px;
-    height: 80px;
-    margin: 35px;
-    position: absolute;
-    left: 30%;
-}
-
-#Final {
-    width: 180px;
-    height: 80px;
-    margin: 35px;
-    position: absolute;
-    top: 75%;
-    left: 30%;
 }
 
 #DecisaoInit {
@@ -85,7 +65,6 @@ body {
 /*Blocos instanciandos*/
 .BlocoInst {
     position: absolute;
-
 }
 
 .Conector {
@@ -93,7 +72,6 @@ body {
     height: 30px;
     position: absolute;
     left: 41%;
-
 }
 
 .Conector.Cima {
@@ -102,4 +80,55 @@ body {
 
 .Conector.Baixo {
     top: 80px;
+}
+
+/*Janela de texto*/
+#janelaTexto {
+    width: 33vw;
+    height: 33vw;
+    background-color: antiquewhite;
+    position: absolute;
+    left: 33vw;
+    top: 50px;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 50px;
+}
+
+#textoJanela {
+    position: static;
+    color: #000000;
+}
+
+#campoTexto {
+    position: static;
+}
+
+#btnSalvar {
+    width: 150px;
+    height: 30px;
+    border: #000000;
+    border-radius: 15px;
+    position: static;
+    background-color: #000000;
+}
+
+#btnCancelar {
+    width: 150px;
+    height: 30px;
+    border: #000000;
+    border-radius: 15px;
+    position: static;
+    background-color: red;
+}
+
+#divBnt {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
 }

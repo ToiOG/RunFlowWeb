@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RunFlow</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@antv/x6@latest/dist/x6.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styleConsole.css">
 </head>
-<body>    <section id="fluxograma" class="secao">
-        <div id="Inicio" class="Bloco"><canvas id="BlcInicio" class="ImgBlc"></canvas></div>
-        <div id="Final" class="Bloco BlocoInst"><canvas id="BlcFinal" class="ImgBlc"></canvas></div>
-
-    </section>
+<body>  
     <section id="blocos" class="secao">
         <div id="ProcessamentoInit" class="BlocoInstanciar"><canvas id="BlcProc" class="ImgBlc"></canvas></div>
         <div id="EntradaInit" class="BlocoInstanciar"><canvas id="BlcEntrada" class="ImgBlc"></canvas></div>
@@ -18,10 +16,39 @@
         <div id="SaidaInit" class="BlocoInstanciar"><canvas id="BlcSaida" class="ImgBlc"></canvas></div>
     </section>
 
-    <section id="console" class="secao">
-
+    <section id="fluxograma" class="secao">
     </section>
+
+    <section id="consoleSection">
+          <div class="wrap">
+            <!-- Console -->
+            <section class="card">
+            <header>
+                <div class="title">
+                <strong>Console</strong>
+                <span>Digite <b>help</b>, <b>run</b> ou <b>clear</b></span>
+                </div>
+                <div class="btns">
+                <button id="btnRun">Run</button>
+                <button id="btnStop" disabled>Stop</button>
+                <button id="btnClear">Clear</button>
+                </div>
+            </header>
+
+            <div id="console" aria-label="Console"></div>
+
+            <div class="prompt">
+                <span class="prefix">></span>
+                <input id="cmd" type="text" placeholder="ex: run" autocomplete="off" />
+            </div>
+        </section>
+    </section>
+
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@antv/x6/dist/x6.js"></script>
     <script src="script.js"></script>
+    <script src="config.js"></script>
+    <script src="compilador.js"></script>
+    <script src="configConsole.js"></script>
 </body>
 </html>
