@@ -61,7 +61,6 @@ function tokenize(line) {
 }
 
 async function runScript(text) {
-    console.log(text)
     if (running) return;
 
     stopRequested = false;

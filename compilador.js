@@ -83,19 +83,37 @@ function comecarFluxograma() {
     runScript(pseudoCodigo);
 }
 
-function separarVariaveisPrint(frase, contador) {
-    let fraseEditada = "";
-    if (contador == 0) {
-        fraseEditada = frase.replace("'" | '"', "{");
-        contador++;
-    } else {
-        fraseEditada = frase.replace("'" | '"', "}");
-        contador--;
-    }
+function separarVariaveisPrint(frase) {
+     
+    const partes = frase.split("+");
+    let resultado = "";
 
-    if (fraseEditada == frase) {
-        return fraseEditada;
-    } else {
-        return separarVariaveisPrint(fraseEditada, contador);
+    for (let i = 0; i < partes.length; i++) {
+        const parte = partes[i];
+        if (!parte) continue;
+        if (parte.includes("'") || parte.includes('"')) {
+            resultado += parte.replace(/["'"|'"']/g, "");
+        } else {
+            resultado += `{${parte.trim()}}`;
+        }
     }
+    return resultado;
 }
+/*
+function separarVariaveisPrint(frase) {
+
+    const partes = frase.split(/["'"|'"']/);
+    let resultado = "";
+
+    for (let i = 0; i < partes.length; i++) {
+        const parte = partes[i].trim();
+        if (!parte) continue;
+        if (i % 2 == 0) {
+            resultado += ` {${parte}}`;
+        } else {
+            resultado += parte;
+        }
+    }
+    return resultado;
+}
+*/
