@@ -99,21 +99,3 @@ function separarVariaveisPrint(frase) {
     }
     return resultado;
 }
-/*
-function separarVariaveisPrint(frase) {
-
-    const partes = frase.split(/["'"|'"']/);
-    let resultado = "";
-
-    for (let i = 0; i < partes.length; i++) {
-        const parte = partes[i].trim();
-        if (!parte) continue;
-        if (i % 2 == 0) {
-            resultado += ` {${parte}}`;
-        } else {
-            resultado += parte;
-        }
-    }
-    return resultado;
-}
-*/
