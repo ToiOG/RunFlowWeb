@@ -61,15 +61,15 @@ interact(".BlocoInst").styleCursor(false).draggable({
         })
     ]
 });
-/*Iteract
-X6 antV*/
+/*Fim do Iteract
+---------------------------------
+Inicio do X6 antV*/
 const graph = new X6.Graph({
     container: document.getElementById('fluxograma'),
     grid: true,
     mousewheel: {
         enabled: true,
         zoomAtMousePosition: true,
-        modifiers: 'ctrl',
         minScale: 0.5,
         maxScale: 3,
     },
@@ -78,6 +78,10 @@ const graph = new X6.Graph({
         multiple: true,
         rubberband: true,
         showNodeSelectionBox: true,
+        modifiers: 'shift',
+    },
+    panning: {
+        enabled: true,
     },
     connecting: {
         router: 'orth',
@@ -130,33 +134,62 @@ const graph = new X6.Graph({
             },
         },
     },
-})
+}).on('edge:connected', ({ edge }) => {
+    const sourceNode = edge.getSourceCell();
+
+    if (sourceNode.shape !== "decisao") return;
+
+    const portId = edge.getSourcePortId();
+    const port = sourceNode.getPort(portId);
+
+    if (port.group == "verdadeiro") {
+        edge.setLabels([{
+            attrs: {
+                label: {
+                    text: "Verdadeiro"
+                }
+            }
+        }
+        ]);
+    }
+
+    if (port.group == "falso") {
+        edge.setLabels([{
+            attrs: {
+                label: {
+                    text: "Falso"
+                }
+            }
+        }
+        ]);
+    }
+});
 
 const fluxograma = document.getElementById('fluxograma')
 fluxograma.tabIndex = 0
 
 fluxograma.addEventListener('mousedown', () => {
-  fluxograma.focus()
+    fluxograma.focus()
 })
 
 document.addEventListener('keydown', (e) => {
-  if (document.activeElement !== fluxograma) return
+    if (document.activeElement !== fluxograma) return
 
-  if (e.key === 'Delete') {
-    e.preventDefault()
-    deletar()
-  }
+    if (e.key === 'Delete') {
+        e.preventDefault()
+        deletar()
+    }
 })
 
 function deletar() {
-  const cells = graph.getSelectedCells()
-  if (cells.length) {
-    if (cells.find(bloco => bloco.id === 'terminalInicio') || cells.find(bloco => bloco.id === 'terminalFinal')) {
-        alert("Não é possivel deletar os blocos terminais!")
-    } else {
-        graph.removeCells(cells)
+    const cells = graph.getSelectedCells()
+    if (cells.length) {
+        if (cells.find(bloco => bloco.id === 'terminalInicio') || cells.find(bloco => bloco.id === 'terminalFinal')) {
+            alert("Não é possivel deletar os blocos terminais!")
+        } else {
+            graph.removeCells(cells)
+        }
     }
-  }
 }
 
 const ports = {
@@ -184,7 +217,7 @@ const ports = {
             attrs: {
                 circle: {
                     r: 4,
-                    magnet: 'passive',
+                    magnet: true,
                     stroke: '#5F95FF',
                     strokeWidth: 1,
                     fill: '#fff',
@@ -195,6 +228,21 @@ const ports = {
             },
         },
         right: {
+            position: 'right',
+            attrs: {
+                circle: {
+                    r: 4,
+                    magnet: 'passive',
+                    stroke: '#5F95FF',
+                    strokeWidth: 1,
+                    fill: '#fff',
+                    style: {
+                        visibility: true,
+                    },
+                },
+            },
+        },
+        verdadeiro: {
             position: 'right',
             attrs: {
                 circle: {
@@ -229,6 +277,21 @@ const ports = {
             attrs: {
                 circle: {
                     r: 4,
+                    magnet: 'passive',
+                    stroke: '#5F95FF',
+                    strokeWidth: 1,
+                    fill: '#fff',
+                    style: {
+                        visibility: true,
+                    },
+                },
+            },
+        },
+        falso: {
+            position: 'left',
+            attrs: {
+                circle: {
+                    r: 4,
                     magnet: true,
                     stroke: '#5F95FF',
                     strokeWidth: 1,
@@ -255,6 +318,12 @@ const ports = {
         },
         {
             group: 'left',
+        },
+        {
+            group: 'verdadeiro',
+        },
+        {
+            group: 'falso',
         },
     ],
 }
@@ -326,7 +395,28 @@ X6.Shape.Polygon.define({
     },
     ports: {
         groups: ports.groups,
-        items: ports.items.filter(port => port.group == 'top' || port.group == 'left' || port.group == 'right'),
+        items: ports.items.filter(port => port.group == 'top' || port.group == 'falso' || port.group == 'verdadeiro'),
+    },
+});
+
+X6.Shape.Ellipse.define({
+    shape: 'conector',
+    width: 75,
+    height: 75,
+    attrs: {
+        body: {
+            fill: '#34C4A0',
+            stroke: '#000',
+        },
+        label: {
+            text: 'Conector',
+            fill: '#000',
+            fontSize: 16,
+        },
+    },
+    ports: {
+        groups: ports.groups,
+        items: ports.items.filter(port => port.group == 'bottom' || port.group == 'left' || port.group == 'right'),
     },
 });
 
@@ -447,6 +537,15 @@ cxDeci.lineTo(220, 65);
 cxDeci.lineTo(110, 130);
 cxDeci.fill();
 cxDeci.closePath();
+
+let blocoConector = document.getElementById("BlcConector");
+let cxConec = blocoConector.getContext("2d");
+
+cxConec.fillStyle = "rgb(52, 196, 160)";
+cxConec.beginPath();
+cxConec.arc(110, 55, 30, 0, 2 * Math.PI);
+cxConec.fill();
+cxConec.closePath();
 
 let blocoSaida = document.getElementById("BlcSaida");
 let cxSaida = blocoSaida.getContext("2d");

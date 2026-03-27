@@ -15,10 +15,10 @@ function processarDecisao(node, linhas) {
         const port = node.getPort(portId);
         const group = port?.group;
         const target = graph.getCellById(edge.getTargetCellId());
-        if (group === "right") {
+        if (group === "verdadeiro") {
             proximoTrue = target;
         }
-        if (group === "left") {
+        if (group === "falso") {
             proximoFalse = target;
         }
     });
@@ -56,11 +56,15 @@ function executarNode(node, codigoSeparado) {
                 processarDecisao(node, codigoSeparado);
             }
                 break;
+            case "conector": {
+                codigoSeparado.push(`conector`)
+            }
+                break;
         }
     }
     let proximoNode;
     if (blocoDecisao == false) {
-    proximoNode = getProximoNode(node);
+        proximoNode = getProximoNode(node);
     } else {
         proximoNode = getProximoNode(node);
         proximoNode = getProximoNode(proximoNode);
@@ -84,7 +88,7 @@ function comecarFluxograma() {
 }
 
 function separarVariaveisPrint(frase) {
-     
+
     const partes = frase.split("+");
     let resultado = "";
 

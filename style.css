@@ -17,7 +17,7 @@ body {
     align-items: center;
     justify-items: center;
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     z-index: 1;
 }
 
@@ -37,16 +37,6 @@ body {
 }
 
 
-.BlocoInstanciar {
-    width: 220px;
-    height: 110px;
-}
-
-#DecisaoInit {
-    width: 220px;
-    height: 130px;
-}
-
 .ImgBlc {
     width: 220px;
     height: 110px;
@@ -57,29 +47,9 @@ body {
     height: 130px;
 }
 
-#BlcTerminal {
-    width: 180px;
-    height: 60px;
-}
-
 /*Blocos instanciandos*/
 .BlocoInst {
     position: absolute;
-}
-
-.Conector {
-    width: 30px;
-    height: 30px;
-    position: absolute;
-    left: 41%;
-}
-
-.Conector.Cima {
-    top: 0;
-}
-
-.Conector.Baixo {
-    top: 80px;
 }
 
 /*Janela de texto*/

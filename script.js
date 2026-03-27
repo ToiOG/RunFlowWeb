@@ -30,44 +30,59 @@ function instanciar(target, xBlocoInit, yBlocoInit) {
         y: yBlocoInit,
       });
       break;
+    case "conectorInit":
+      graph.addNode({
+        shape: 'conector',
+        x: xBlocoInit,
+        y: yBlocoInit,
+      });
+      break;
   }
 }
 
 function instanciarJanelaTexto(e) {
-  const body = document.querySelector("body");
+  if (e?.shape != "conector") {
+    const body = document.querySelector("body");
 
-  let janela = document.createElement("div");
-  janela.id = "janelaTexto";
+    let janela = document.createElement("div");
+    janela.id = "janelaTexto";
 
-  let textoJanela = document.createElement("label");
-  textoJanela.id = "textoJanela";
-  textoJanela.textContent = "Insira o conteúdo do bloco no campo abaixo:";
+    let textoJanela = document.createElement("label");
+    textoJanela.id = "textoJanela";
+    textoJanela.textContent = "Insira o conteúdo do bloco no campo abaixo:";
 
-  let campoTexto = document.createElement("input");
-  campoTexto.id = "campoTexto";
-  campoTexto.value = e.attr('label/text');
-  campoTexto.type = "text";
+    let campoTexto = document.createElement("input");
+    campoTexto.id = "campoTexto";
+    campoTexto.value = e.attr('label/text');
+    campoTexto.type = "text";
 
-  let divBtn = document.createElement("div");
-  divBtn.id = "divBtn";
+    let divBtn = document.createElement("div");
+    divBtn.id = "divBtn";
 
-  let btnSalvar = document.createElement("button");
-  btnSalvar.id = "btnSalvar";
-  btnSalvar.innerHTML = "Salvar";
-  btnSalvar.addEventListener('click', () => modificarTexto(e));
+    let btnSalvar = document.createElement("button");
+    btnSalvar.id = "btnSalvar";
+    btnSalvar.innerHTML = "Salvar";
+    btnSalvar.addEventListener('click', () => modificarTexto(e));
 
-  let btnCancelar = document.createElement("button");
-  btnCancelar.id = "btnCancelar";
-  btnCancelar.innerHTML = "Cancelar";
-  btnCancelar.addEventListener('click', () => fecharJanela("janelaTexto"));
+    let btnCancelar = document.createElement("button");
+    btnCancelar.id = "btnCancelar";
+    btnCancelar.innerHTML = "Cancelar";
+    btnCancelar.addEventListener('click', () => fecharJanela("janelaTexto"));
 
-  divBtn.appendChild(btnCancelar);
-  divBtn.appendChild(btnSalvar);
-  janela.appendChild(textoJanela);
-  janela.appendChild(campoTexto);
-  janela.appendChild(divBtn);
-  body.appendChild(janela);
+    divBtn.appendChild(btnCancelar);
+    divBtn.appendChild(btnSalvar);
+    janela.appendChild(textoJanela);
+    janela.appendChild(campoTexto);
+    janela.appendChild(divBtn);
+    body.appendChild(janela);
+  }
 }
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && document.getElementById("janelaTexto") != null) {
+       fecharJanela("janelaTexto")
+    }
+});
 
 function modificarTexto(node) {
   node.attr('label/text', document.getElementById("campoTexto").value);

@@ -130,6 +130,9 @@ async function runScript(text) {
                         if (linha?.startsWith("end")) {
                             break;
                         }
+                        if (linha?.startsWith("conector")) {
+                            break;
+                        }
                     }
                 }
             } else if (t.op === "else") {
@@ -139,10 +142,22 @@ async function runScript(text) {
                     if (linha?.startsWith("end")) {
                         break;
                     }
+                    if (linha?.startsWith("conector")) {
+                        break;
+                    }
                 }
             } else if (t.op === "end") {
+                while (i < lines.length) {
+                    i++;
+                    const linha = lines[i]?.trim();
+                    if (linha?.startsWith("conector")) {
+                        break;
+                    }
+                }
+            } else if (t.op === "conector") {
 
-            } else {
+            }
+            else {
                 logLine(`Comando desconhecido: ${t.op}`, "warn");
             }
         } catch (e) {
