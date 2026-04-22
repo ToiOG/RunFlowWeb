@@ -23,9 +23,9 @@ function processarDecisao(node, linhas) {
         }
     });
     linhas.push(`if ${condicao}`);
-    executarNode(proximoTrue, linhas);
+    executarNodeDecisao(proximoTrue, linhas);
     linhas.push("else");
-    executarNode(proximoFalse, linhas);
+    executarNodeDecisao(proximoFalse, linhas);
     linhas.push("end");
     blocoDecisao = true;
 }
@@ -65,12 +65,55 @@ function executarNode(node, codigoSeparado) {
     let proximoNode;
     if (blocoDecisao == false) {
         proximoNode = getProximoNode(node);
+        if (proximoNode.shape=="conector") {
+            return;
+        }
     } else {
         proximoNode = getProximoNode(node);
-        proximoNode = getProximoNode(proximoNode);
+        while (proximoNode.shape!="conector" && proximoNode.id != "terminalFinal") {
+            proximoNode = getProximoNode(proximoNode);
+        }
         blocoDecisao = false;
     }
     if (proximoNode.id != "terminalFinal") {
+        executarNode(proximoNode, codigoSeparado)
+    }
+}
+
+function executarNodeDecisao(node, codigoSeparado) {
+    if (node.id != "terminalInicio") {
+        let codigoNode = node.attr('label/text') || "";
+        let tipoNode = node.shape;
+
+        switch (tipoNode) {
+            case "processamento": {
+                codigoSeparado.push(`set ${codigoNode}`)
+            }
+                break;
+
+            case "entrada": {
+                codigoSeparado.push(`input ${codigoNode}`)
+            }
+                break;
+
+            case "saida": {
+                let cont = 0;
+                let frasePrint = separarVariaveisPrint(codigoNode, cont);
+                codigoSeparado.push(`print ${frasePrint}`)
+            }
+                break;
+            case "decisao": {
+                processarDecisao(node, codigoSeparado);
+            }
+                break;
+            case "conector": {
+                codigoSeparado.push(`conector`)
+            }
+                break;
+        }
+    }
+    let proximoNode = getProximoNode(node);
+    if (proximoNode.shape != "conector" && proximoNode.id != "terminalFinal") {
         executarNode(proximoNode, codigoSeparado)
     }
 }
