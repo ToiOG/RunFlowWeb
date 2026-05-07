@@ -40,7 +40,9 @@ function instanciar(target, xBlocoInit, yBlocoInit) {
   }
 }
 
+let nodeEdicao = null;
 function instanciarJanelaTexto(e) {
+  nodeEdicao = e;
   if (e?.shape != "conector") {
     const body = document.querySelector("body");
 
@@ -80,7 +82,13 @@ function instanciarJanelaTexto(e) {
 
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Enter' && document.getElementById("janelaTexto") != null) {
-       fecharJanela("janelaTexto")
+       modificarTexto(nodeEdicao);
+    }
+});
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Delete' || event.key === "Backspace" && document.getElementById("janelaTexto") != null) {
+       modificarTexto(nodeEdicao);
     }
 });
 
@@ -92,4 +100,5 @@ function modificarTexto(node) {
 function fecharJanela(idJanela) {
   let janela = document.getElementById(idJanela);
   janela.parentElement.removeChild(janela);
+  nodeEdicao = null;
 }

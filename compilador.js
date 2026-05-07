@@ -112,6 +112,7 @@ function executarNodeDecisao(node, codigoSeparado) {
                 break;
         }
     }
+    if (node.shape == "decisao") return;
     let proximoNode = getProximoNode(node);
     if (proximoNode.shape != "conector" && proximoNode.id != "terminalFinal") {
         executarNode(proximoNode, codigoSeparado)

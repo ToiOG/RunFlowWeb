@@ -113,14 +113,11 @@ const graph = new X6.Graph({
                 zIndex: 0,
             })
         },
-        validateConnection({ targetMagnet }) {
-            return !!targetMagnet
-        },
-        validateEdge({ sourceCell, targetCell }) {
-            if ((sourceCell && targetCell && sourceCell.id === targetCell.id)) {
-                return false
+        validateConnection({ targetMagnet, sourceCell, targetCell }) {
+            if (sourceCell && targetCell && sourceCell.id === targetCell.id) {
+                return false;
             }
-            return true
+            return !!targetMagnet
         },
     },
     highlighting: {
@@ -175,7 +172,7 @@ fluxograma.addEventListener('mousedown', () => {
 document.addEventListener('keydown', (e) => {
     if (document.activeElement !== fluxograma) return
 
-    if (e.key === 'Delete') {
+    if (e.key === 'Delete' || e.key === 'Backspace') {
         e.preventDefault()
         deletar()
     }
@@ -217,7 +214,7 @@ const ports = {
             attrs: {
                 circle: {
                     r: 4,
-                    magnet: true,
+                    magnet: 'passive',
                     stroke: '#5F95FF',
                     strokeWidth: 1,
                     fill: '#fff',

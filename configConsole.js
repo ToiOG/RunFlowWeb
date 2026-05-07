@@ -3,6 +3,7 @@ const cmdEl = document.getElementById("cmd");
 const btnRun = document.getElementById("btnRun");
 const btnStop = document.getElementById("btnStop");
 const btnClear = document.getElementById("btnClear");
+let depth = 0;
 
 let running = false;
 let stopRequested = false;
@@ -61,6 +62,7 @@ function tokenize(line) {
 }
 
 async function runScript(text) {
+    console.log(text);
     if (running) return;
 
     stopRequested = false;
@@ -121,16 +123,16 @@ async function runScript(text) {
                 const condicao = t.arg;
                 const resultado = realizarEquacao(condicao, vars);
                 if (!resultado) {
+                    depth = 1;
                     while (i < lines.length) {
                         i++;
                         const linha = lines[i]?.trim();
-                        if (linha?.startsWith("else")) {
-                            break;
-                        }
-                        if (linha?.startsWith("end")) {
-                            break;
-                        }
-                        if (linha?.startsWith("conector")) {
+                        if (linha?.startsWith("if")) {
+                            depth++;
+                        } else if (linha?.startsWith("end")) {
+                            depth--;
+                            if (depth === 0) break;
+                        } else if (linha?.startsWith("else") && depth == 1) {
                             break;
                         }
                     }
@@ -139,11 +141,13 @@ async function runScript(text) {
                 while (i < lines.length) {
                     i++;
                     const linha = lines[i]?.trim();
-                    if (linha?.startsWith("end")) {
-                        break;
-                    }
-                    if (linha?.startsWith("conector")) {
-                        break;
+                    if (linha?.startsWith("if")) {
+                        depth++;
+                    } else if (linha?.startsWith("end")) {
+                        depth--;
+                        if (depth == 0) {
+                            break;
+                        }
                     }
                 }
             } else if (t.op === "end") {
