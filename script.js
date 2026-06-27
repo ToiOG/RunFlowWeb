@@ -86,12 +86,6 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Delete' || event.key === "Backspace" && document.getElementById("janelaTexto") != null) {
-       modificarTexto(nodeEdicao);
-    }
-});
-
 function modificarTexto(node) {
   node.attr('label/text', document.getElementById("campoTexto").value);
   fecharJanela("janelaTexto");
